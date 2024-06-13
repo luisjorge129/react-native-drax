@@ -57,7 +57,7 @@ const getAbsoluteMeasurementsForViewFromRegistry = (registry, { measurements, pa
         x: parentX + x - offsetX,
         y: parentY + y - offsetY,
     };
-    return clipped ? math_1.clipMeasurements(abs, parentMeasurements) : abs;
+    return clipped ? (0, math_1.clipMeasurements)(abs, parentMeasurements) : abs;
 };
 /** Get data, including absolute measurements, for a registered view by its id. */
 const getAbsoluteViewDataFromRegistry = (registry, id) => {
@@ -119,7 +119,7 @@ const findMonitorsAndReceiverInRegistry = (registry, absolutePosition, excludeVi
             return;
         }
         // console.log(`absolute measurements: ${JSON.stringify(absoluteMeasurements, null, 2)}`);
-        if (math_1.isPointInside(absolutePosition, absoluteMeasurements)) {
+        if ((0, math_1.isPointInside)(absolutePosition, absoluteMeasurements)) {
             // Drag point is within this target.
             const foundView = {
                 id: targetId,
@@ -128,7 +128,7 @@ const findMonitorsAndReceiverInRegistry = (registry, absolutePosition, excludeVi
                     measurements: target.measurements,
                     absoluteMeasurements,
                 },
-                ...math_1.getRelativePosition(absolutePosition, absoluteMeasurements),
+                ...(0, math_1.getRelativePosition)(absolutePosition, absoluteMeasurements),
             };
             if (monitoring) {
                 // Add it to the list of monitors.
@@ -199,7 +199,7 @@ const getHoverItemsFromRegistry = (registry) => {
                         internalRenderHoverView,
                         key: releaseId,
                         id: viewId,
-                        dimensions: math_1.extractDimensions(measurements),
+                        dimensions: (0, math_1.extractDimensions)(measurements),
                     });
                 }
             }
@@ -215,7 +215,7 @@ const getHoverItemsFromRegistry = (registry) => {
                 key: `dragged-hover-${draggedId}`,
                 id: draggedId,
                 hoverPosition: registry.drag.hoverPosition,
-                dimensions: math_1.extractDimensions(measurements),
+                dimensions: (0, math_1.extractDimensions)(measurements),
             });
         }
     }
@@ -317,7 +317,7 @@ const resetReceiverInRegistry = ({ drag, stateDispatch }) => {
 };
 /** Track a new release, returning its unique identifier. */
 const createReleaseInRegistry = (registry, release) => {
-    const releaseId = math_1.generateRandomId();
+    const releaseId = (0, math_1.generateRandomId)();
     registry.releaseIds.push(releaseId);
     registry.releaseById[releaseId] = release;
     return releaseId;
@@ -345,7 +345,7 @@ const resetDragInRegistry = (registry, snapbackTarget = types_1.DraxSnapbackTarg
         const { internalRenderHoverView, onSnapbackEnd, snapbackAnimator, animateSnapback = true, snapbackDelay = params_1.defaultSnapbackDelay, snapbackDuration = params_1.defaultSnapbackDuration, } = draggedData.protocol;
         if (internalRenderHoverView && animateSnapback) {
             let toValue;
-            if (types_1.isPosition(snapbackTarget)) {
+            if ((0, types_1.isPosition)(snapbackTarget)) {
                 // Snapback to specified target.
                 toValue = snapbackTarget;
             }
@@ -588,9 +588,9 @@ const unregisterViewInRegistry = (registry, { id }) => {
 /** Create a Drax registry and wire up all of the methods. */
 const useDraxRegistry = (stateDispatch) => {
     /** Registry for tracking views and drags. */
-    const registryRef = react_1.useRef(createInitialRegistry(stateDispatch));
+    const registryRef = (0, react_1.useRef)(createInitialRegistry(stateDispatch));
     /** Ensure that the registry has the latest version of state dispatch, although it should never change. */
-    react_1.useEffect(() => {
+    (0, react_1.useEffect)(() => {
         registryRef.current.stateDispatch = stateDispatch;
     }, [stateDispatch]);
     /**
@@ -599,61 +599,61 @@ const useDraxRegistry = (stateDispatch) => {
      *
      */
     /** Get data for a registered view by its id. */
-    const getViewData = react_1.useCallback((id) => getViewDataFromRegistry(registryRef.current, id), []);
+    const getViewData = (0, react_1.useCallback)((id) => getViewDataFromRegistry(registryRef.current, id), []);
     /** Get data, including absolute measurements, for a registered view by its id. */
-    const getAbsoluteViewData = react_1.useCallback((id) => getAbsoluteViewDataFromRegistry(registryRef.current, id), []);
+    const getAbsoluteViewData = (0, react_1.useCallback)((id) => getAbsoluteViewDataFromRegistry(registryRef.current, id), []);
     /** Get id and data for the currently dragged view, if any. */
-    const getTrackingDragged = react_1.useCallback(() => getTrackingDraggedFromRegistry(registryRef.current), []);
+    const getTrackingDragged = (0, react_1.useCallback)(() => getTrackingDraggedFromRegistry(registryRef.current), []);
     /** Get id and data for the currently receiving view, if any. */
-    const getTrackingReceiver = react_1.useCallback(() => getTrackingReceiverFromRegistry(registryRef.current), []);
+    const getTrackingReceiver = (0, react_1.useCallback)(() => getTrackingReceiverFromRegistry(registryRef.current), []);
     /** Get ids for all currently monitoring views. */
-    const getTrackingMonitorIds = react_1.useCallback(() => getTrackingMonitorIdsFromRegistry(registryRef.current), []);
+    const getTrackingMonitorIds = (0, react_1.useCallback)(() => getTrackingMonitorIdsFromRegistry(registryRef.current), []);
     /** Get id and data for all currently monitoring views. */
-    const getTrackingMonitors = react_1.useCallback(() => getTrackingMonitorsFromRegistry(registryRef.current), []);
+    const getTrackingMonitors = (0, react_1.useCallback)(() => getTrackingMonitorsFromRegistry(registryRef.current), []);
     /**
      * Get the absolute position of a drag already in progress from touch
      * coordinates within the immediate parent view of the dragged view.
      */
-    const getDragPositionData = react_1.useCallback((params) => (getDragPositionDataFromRegistry(registryRef.current, params)), []);
+    const getDragPositionData = (0, react_1.useCallback)((params) => (getDragPositionDataFromRegistry(registryRef.current, params)), []);
     /**
      * Find all monitoring views and the latest receptive view that
      * contain the touch coordinates, excluding the specified view.
      */
-    const findMonitorsAndReceiver = react_1.useCallback((absolutePosition, excludeViewId) => (findMonitorsAndReceiverInRegistry(registryRef.current, absolutePosition, excludeViewId)), []);
+    const findMonitorsAndReceiver = (0, react_1.useCallback)((absolutePosition, excludeViewId) => (findMonitorsAndReceiverInRegistry(registryRef.current, absolutePosition, excludeViewId)), []);
     /** Get the array of hover items for dragged and released views */
-    const getHoverItems = react_1.useCallback(() => getHoverItemsFromRegistry(registryRef.current), []);
+    const getHoverItems = (0, react_1.useCallback)(() => getHoverItemsFromRegistry(registryRef.current), []);
     /**
      *
      * Imperative methods without state reactions (data management only).
      *
      */
     /** Update a view's protocol callbacks/data. */
-    const updateViewProtocol = react_1.useCallback((payload) => updateViewProtocolInRegistry(registryRef.current, payload), []);
+    const updateViewProtocol = (0, react_1.useCallback)((payload) => updateViewProtocolInRegistry(registryRef.current, payload), []);
     /** Update a view's measurements. */
-    const updateViewMeasurements = react_1.useCallback((payload) => updateViewMeasurementsInRegistry(registryRef.current, payload), []);
+    const updateViewMeasurements = (0, react_1.useCallback)((payload) => updateViewMeasurementsInRegistry(registryRef.current, payload), []);
     /**
      *
      * Imperative methods with potential state reactions.
      *
      */
     /** Register a Drax view. */
-    const registerView = react_1.useCallback((payload) => registerViewInRegistry(registryRef.current, payload), []);
+    const registerView = (0, react_1.useCallback)((payload) => registerViewInRegistry(registryRef.current, payload), []);
     /** Reset the receiver in drag tracking, if any. */
-    const resetReceiver = react_1.useCallback(() => resetReceiverInRegistry(registryRef.current), []);
+    const resetReceiver = (0, react_1.useCallback)(() => resetReceiverInRegistry(registryRef.current), []);
     /** Reset drag tracking, if any. */
-    const resetDrag = react_1.useCallback((snapbackTarget) => resetDragInRegistry(registryRef.current, snapbackTarget), []);
+    const resetDrag = (0, react_1.useCallback)((snapbackTarget) => resetDragInRegistry(registryRef.current, snapbackTarget), []);
     /** Start tracking a drag. */
-    const startDrag = react_1.useCallback((payload) => startDragInRegistry(registryRef.current, payload), []);
+    const startDrag = (0, react_1.useCallback)((payload) => startDragInRegistry(registryRef.current, payload), []);
     /** Update drag position. */
-    const updateDragPosition = react_1.useCallback((dragAbsolutePosition) => (updateDragPositionInRegistry(registryRef.current, dragAbsolutePosition)), []);
+    const updateDragPosition = (0, react_1.useCallback)((dragAbsolutePosition) => (updateDragPositionInRegistry(registryRef.current, dragAbsolutePosition)), []);
     /** Update the receiver for a drag. */
-    const updateReceiver = react_1.useCallback((receiver, dragged) => (updateReceiverInRegistry(registryRef.current, receiver, dragged)), []);
+    const updateReceiver = (0, react_1.useCallback)((receiver, dragged) => (updateReceiverInRegistry(registryRef.current, receiver, dragged)), []);
     /** Set the monitors for a drag. */
-    const setMonitorIds = react_1.useCallback((monitorIds) => setMonitorIdsInRegistry(registryRef.current, monitorIds), []);
+    const setMonitorIds = (0, react_1.useCallback)((monitorIds) => setMonitorIdsInRegistry(registryRef.current, monitorIds), []);
     /** Unregister a Drax view. */
-    const unregisterView = react_1.useCallback((payload) => unregisterViewInRegistry(registryRef.current, payload), []);
+    const unregisterView = (0, react_1.useCallback)((payload) => unregisterViewInRegistry(registryRef.current, payload), []);
     /** Create the Drax registry object for return, only replacing reference when necessary. */
-    const draxRegistry = react_1.useMemo(() => ({
+    const draxRegistry = (0, react_1.useMemo)(() => ({
         getViewData,
         getAbsoluteViewData,
         getTrackingDragged,

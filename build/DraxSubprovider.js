@@ -8,7 +8,7 @@ const react_1 = __importDefault(require("react"));
 const DraxContext_1 = require("./DraxContext");
 const hooks_1 = require("./hooks");
 const DraxSubprovider = ({ parent, children }) => {
-    const contextValue = hooks_1.useDraxContext();
+    const contextValue = (0, hooks_1.useDraxContext)();
     const subContextValue = {
         ...contextValue,
         parent,

@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -27,28 +31,29 @@ const DraxSubprovider_1 = require("./DraxSubprovider");
 const hooks_1 = require("./hooks");
 const types_1 = require("./types");
 const params_1 = require("./params");
-const DraxScrollView = ({ children, onScroll: onScrollProp, onContentSizeChange: onContentSizeChangeProp, scrollEventThrottle = params_1.defaultScrollEventThrottle, autoScrollIntervalLength = params_1.defaultAutoScrollIntervalLength, autoScrollJumpRatio = params_1.defaultAutoScrollJumpRatio, autoScrollBackThreshold = params_1.defaultAutoScrollBackThreshold, autoScrollForwardThreshold = params_1.defaultAutoScrollForwardThreshold, id: idProp, ...props }) => {
+const DraxScrollViewUnforwarded = (props, forwardedRef) => {
+    const { children, style, onScroll: onScrollProp, onContentSizeChange: onContentSizeChangeProp, scrollEventThrottle = params_1.defaultScrollEventThrottle, autoScrollIntervalLength = params_1.defaultAutoScrollIntervalLength, autoScrollJumpRatio = params_1.defaultAutoScrollJumpRatio, autoScrollBackThreshold = params_1.defaultAutoScrollBackThreshold, autoScrollForwardThreshold = params_1.defaultAutoScrollForwardThreshold, id: idProp, ...scrollViewProps } = props;
     // The unique identifer for this view.
-    const id = hooks_1.useDraxId(idProp);
+    const id = (0, hooks_1.useDraxId)(idProp);
     // Scrollable view, used for scrolling.
-    const scrollRef = react_1.useRef(null);
+    const scrollRef = (0, react_1.useRef)(null);
     // ScrollView node handle, used for measuring children.
-    const nodeHandleRef = react_1.useRef(null);
+    const nodeHandleRef = (0, react_1.useRef)(null);
     // Container view measurements, for scrolling by percentage.
-    const containerMeasurementsRef = react_1.useRef(undefined);
+    const containerMeasurementsRef = (0, react_1.useRef)(undefined);
     // Content size, for scrolling by percentage.
-    const contentSizeRef = react_1.useRef(undefined);
+    const contentSizeRef = (0, react_1.useRef)(undefined);
     // Scroll position, for Drax bounds checking and auto-scrolling.
-    const scrollPositionRef = react_1.useRef({ x: 0, y: 0 });
+    const scrollPositionRef = (0, react_1.useRef)({ x: 0, y: 0 });
     // Auto-scroll state.
-    const autoScrollStateRef = react_1.useRef({
+    const autoScrollStateRef = (0, react_1.useRef)({
         x: types_1.AutoScrollDirection.None,
         y: types_1.AutoScrollDirection.None,
     });
     // Auto-scroll interval.
-    const autoScrollIntervalRef = react_1.useRef(undefined);
+    const autoScrollIntervalRef = (0, react_1.useRef)(undefined);
     // Handle auto-scrolling on interval.
-    const doScroll = react_1.useCallback(() => {
+    const doScroll = (0, react_1.useCallback)(() => {
         const scroll = scrollRef.current;
         const containerMeasurements = containerMeasurementsRef.current;
         const contentSize = contentSizeRef.current;
@@ -75,7 +80,7 @@ const DraxScrollView = ({ children, onScroll: onScrollProp, onContentSizeChange:
             }
         }
         if (autoScrollState.y === types_1.AutoScrollDirection.Forward) {
-            const yMax = contentSize.y - containerMeasurements.width;
+            const yMax = contentSize.y - containerMeasurements.height;
             if (scrollPosition.y < yMax) {
                 yNew = Math.min(scrollPosition.y + jump.y, yMax);
             }
@@ -94,7 +99,7 @@ const DraxScrollView = ({ children, onScroll: onScrollProp, onContentSizeChange:
         }
     }, [autoScrollJumpRatio]);
     // Start the auto-scrolling interval.
-    const startScroll = react_1.useCallback(() => {
+    const startScroll = (0, react_1.useCallback)(() => {
         if (autoScrollIntervalRef.current) {
             return;
         }
@@ -102,32 +107,32 @@ const DraxScrollView = ({ children, onScroll: onScrollProp, onContentSizeChange:
         autoScrollIntervalRef.current = setInterval(doScroll, autoScrollIntervalLength);
     }, [doScroll, autoScrollIntervalLength]);
     // Stop the auto-scrolling interval.
-    const stopScroll = react_1.useCallback(() => {
+    const stopScroll = (0, react_1.useCallback)(() => {
         if (autoScrollIntervalRef.current) {
             clearInterval(autoScrollIntervalRef.current);
             autoScrollIntervalRef.current = undefined;
         }
     }, []);
     // If startScroll changes, refresh our interval.
-    react_1.useEffect(() => {
+    (0, react_1.useEffect)(() => {
         if (autoScrollIntervalRef.current) {
             stopScroll();
             startScroll();
         }
     }, [stopScroll, startScroll]);
     // Clear auto-scroll direction and stop the auto-scrolling interval.
-    const resetScroll = react_1.useCallback(() => {
+    const resetScroll = (0, react_1.useCallback)(() => {
         const autoScrollState = autoScrollStateRef.current;
         autoScrollState.x = types_1.AutoScrollDirection.None;
         autoScrollState.y = types_1.AutoScrollDirection.None;
         stopScroll();
     }, [stopScroll]);
     // Track the size of the container view.
-    const onMeasureContainer = react_1.useCallback((measurements) => {
+    const onMeasureContainer = (0, react_1.useCallback)((measurements) => {
         containerMeasurementsRef.current = measurements;
     }, []);
     // Monitor drag-over events to react with auto-scrolling.
-    const onMonitorDragOver = react_1.useCallback((event) => {
+    const onMonitorDragOver = (0, react_1.useCallback)((event) => {
         const { monitorOffsetRatio } = event;
         const autoScrollState = autoScrollStateRef.current;
         if (monitorOffsetRatio.x >= autoScrollForwardThreshold) {
@@ -161,23 +166,32 @@ const DraxScrollView = ({ children, onScroll: onScrollProp, onContentSizeChange:
         autoScrollForwardThreshold,
     ]);
     // Set the ScrollView and node handle refs.
-    const setScrollViewRefs = react_1.useCallback((ref) => {
+    const setScrollViewRefs = (0, react_1.useCallback)((ref) => {
         scrollRef.current = ref;
-        nodeHandleRef.current = ref && react_native_1.findNodeHandle(ref);
-    }, []);
+        nodeHandleRef.current = ref && (0, react_native_1.findNodeHandle)(ref);
+        if (forwardedRef) {
+            if (typeof forwardedRef === 'function') {
+                forwardedRef(ref);
+            }
+            else {
+                // eslint-disable-next-line no-param-reassign
+                forwardedRef.current = ref;
+            }
+        }
+    }, [forwardedRef]);
     // Track content size.
-    const onContentSizeChange = react_1.useCallback((width, height) => {
+    const onContentSizeChange = (0, react_1.useCallback)((width, height) => {
         contentSizeRef.current = { x: width, y: height };
         return onContentSizeChangeProp?.(width, height);
     }, [onContentSizeChangeProp]);
     // Update tracked scroll position when list is scrolled.
-    const onScroll = react_1.useCallback((event) => {
+    const onScroll = (0, react_1.useCallback)((event) => {
         const { nativeEvent: { contentOffset } } = event;
         scrollPositionRef.current = { ...contentOffset };
         return onScrollProp?.(event);
     }, [onScrollProp]);
-    return id ? (react_1.default.createElement(DraxView_1.DraxView, { id: id, scrollPositionRef: scrollPositionRef, onMeasure: onMeasureContainer, onMonitorDragOver: onMonitorDragOver, onMonitorDragExit: resetScroll, onMonitorDragEnd: resetScroll, onMonitorDragDrop: resetScroll },
+    return id ? (react_1.default.createElement(DraxView_1.DraxView, { id: id, style: style, scrollPositionRef: scrollPositionRef, onMeasure: onMeasureContainer, onMonitorDragOver: onMonitorDragOver, onMonitorDragExit: resetScroll, onMonitorDragEnd: resetScroll, onMonitorDragDrop: resetScroll },
         react_1.default.createElement(DraxSubprovider_1.DraxSubprovider, { parent: { id, nodeHandleRef } },
-            react_1.default.createElement(react_native_1.ScrollView, Object.assign({}, props, { ref: setScrollViewRefs, onContentSizeChange: onContentSizeChange, onScroll: onScroll, scrollEventThrottle: scrollEventThrottle }), children)))) : null;
+            react_1.default.createElement(react_native_1.ScrollView, { ...scrollViewProps, ref: setScrollViewRefs, onContentSizeChange: onContentSizeChange, onScroll: onScroll, scrollEventThrottle: scrollEventThrottle }, children)))) : null;
 };
-exports.DraxScrollView = DraxScrollView;
+exports.DraxScrollView = (0, react_1.forwardRef)(DraxScrollViewUnforwarded);

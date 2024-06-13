@@ -1,3 +1,6 @@
-import { PropsWithChildren } from 'react';
+import React from 'react';
+import { ScrollView } from 'react-native';
 import { DraxScrollViewProps } from './types';
-export declare const DraxScrollView: ({ children, onScroll: onScrollProp, onContentSizeChange: onContentSizeChangeProp, scrollEventThrottle, autoScrollIntervalLength, autoScrollJumpRatio, autoScrollBackThreshold, autoScrollForwardThreshold, id: idProp, ...props }: PropsWithChildren<DraxScrollViewProps>) => JSX.Element | null;
+export declare const DraxScrollView: React.ForwardRefExoticComponent<DraxScrollViewProps & {
+    children?: React.ReactNode;
+} & React.RefAttributes<ScrollView>>;

@@ -1,3 +1,8 @@
-import React, { PropsWithChildren } from 'react';
+import { PropsWithChildren, Ref } from 'react';
+import { FlatList } from 'react-native';
 import { DraxListProps } from './types';
-export declare const DraxList: <T extends unknown>({ data, style, flatListStyle, itemStyles, renderItemContent, renderItemHoverContent, onItemDragStart, onItemDragPositionChange, onItemDragEnd, onItemReorder, viewPropsExtractor, id: idProp, reorderable: reorderableProp, onScroll: onScrollProp, itemsDraggable, lockItemDragsToMainAxis, longPressDelay, ...props }: React.PropsWithChildren<DraxListProps<T>>) => JSX.Element;
+declare type DraxListType = <T extends unknown>(props: PropsWithChildren<DraxListProps<T>> & {
+    ref?: Ref<FlatList>;
+}) => JSX.Element;
+export declare const DraxList: DraxListType;
+export {};

@@ -35,15 +35,15 @@ const selectViewState = (state, id) => (id === undefined ? undefined : state.vie
 const selectTrackingStatus = (state) => state.trackingStatus;
 /** Collection of Drax action creators */
 exports.actions = {
-    createViewState: typesafe_actions_1.createAction('createViewState')(),
-    updateViewState: typesafe_actions_1.createAction('updateViewState')(),
-    deleteViewState: typesafe_actions_1.createAction('deleteViewState')(),
-    updateTrackingStatus: typesafe_actions_1.createAction('updateTrackingStatus')(),
+    createViewState: (0, typesafe_actions_1.createAction)('createViewState')(),
+    updateViewState: (0, typesafe_actions_1.createAction)('updateViewState')(),
+    deleteViewState: (0, typesafe_actions_1.createAction)('deleteViewState')(),
+    updateTrackingStatus: (0, typesafe_actions_1.createAction)('updateTrackingStatus')(),
 };
 /** The DraxState reducer. */
 const reducer = (state, action) => {
     switch (action.type) {
-        case typesafe_actions_1.getType(exports.actions.createViewState): {
+        case (0, typesafe_actions_1.getType)(exports.actions.createViewState): {
             const { id } = action.payload;
             const viewState = selectViewState(state, id);
             if (viewState) {
@@ -57,7 +57,7 @@ const reducer = (state, action) => {
                 },
             };
         }
-        case typesafe_actions_1.getType(exports.actions.updateViewState): {
+        case (0, typesafe_actions_1.getType)(exports.actions.updateViewState): {
             const { id, viewStateUpdate } = action.payload;
             const viewState = selectViewState(state, id);
             if (viewState) {
@@ -65,7 +65,7 @@ const reducer = (state, action) => {
                     ...viewState,
                     ...viewStateUpdate,
                 };
-                if (lodash_isequal_1.default(viewState, newViewState)) {
+                if ((0, lodash_isequal_1.default)(viewState, newViewState)) {
                     return state;
                 }
                 return {
@@ -78,7 +78,7 @@ const reducer = (state, action) => {
             }
             return state;
         }
-        case typesafe_actions_1.getType(exports.actions.deleteViewState): {
+        case (0, typesafe_actions_1.getType)(exports.actions.deleteViewState): {
             const { id } = action.payload;
             const { [id]: removed, ...viewStateById } = state.viewStateById;
             if (removed) {
@@ -89,7 +89,7 @@ const reducer = (state, action) => {
             }
             return state;
         }
-        case typesafe_actions_1.getType(exports.actions.updateTrackingStatus): {
+        case (0, typesafe_actions_1.getType)(exports.actions.updateTrackingStatus): {
             return {
                 ...state,
                 trackingStatus: {
@@ -105,13 +105,13 @@ const reducer = (state, action) => {
 /** Create a Drax state and wire up its methods. */
 const useDraxState = () => {
     /** Reducer for storing view states and tracking status. */
-    const [state, dispatch] = react_1.useReducer(reducer, undefined, createInitialState);
+    const [state, dispatch] = (0, react_1.useReducer)(reducer, undefined, createInitialState);
     /** Get state for a view by its id. */
-    const getViewState = react_1.useCallback((id) => selectViewState(state, id), [state]);
+    const getViewState = (0, react_1.useCallback)((id) => selectViewState(state, id), [state]);
     /** Get the current tracking status. */
-    const getTrackingStatus = react_1.useCallback(() => selectTrackingStatus(state), [state]);
+    const getTrackingStatus = (0, react_1.useCallback)(() => selectTrackingStatus(state), [state]);
     /** Create the Drax state object for return, only replacing reference when necessary. */
-    const draxState = react_1.useMemo(() => ({
+    const draxState = (0, react_1.useMemo)(() => ({
         getViewState,
         getTrackingStatus,
         dispatch,

@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -27,11 +31,11 @@ const hooks_1 = require("./hooks");
 const DraxContext_1 = require("./DraxContext");
 const types_1 = require("./types");
 const math_1 = require("./math");
-const DraxProvider = ({ debug = false, children }) => {
-    const { getViewState, getTrackingStatus, dispatch, } = hooks_1.useDraxState();
-    const { getAbsoluteViewData, getTrackingDragged, getTrackingReceiver, getTrackingMonitorIds, getTrackingMonitors, getDragPositionData, findMonitorsAndReceiver, getHoverItems, registerView, updateViewProtocol, updateViewMeasurements, resetReceiver, resetDrag, startDrag, updateDragPosition, updateReceiver, setMonitorIds, unregisterView, } = hooks_1.useDraxRegistry(dispatch);
-    const rootNodeHandleRef = react_1.useRef(null);
-    const handleGestureStateChange = react_1.useCallback((id, event) => {
+const DraxProvider = ({ debug = false, style = styles.provider, children, }) => {
+    const { getViewState, getTrackingStatus, dispatch, } = (0, hooks_1.useDraxState)();
+    const { getAbsoluteViewData, getTrackingDragged, getTrackingReceiver, getTrackingMonitorIds, getTrackingMonitors, getDragPositionData, findMonitorsAndReceiver, getHoverItems, registerView, updateViewProtocol, updateViewMeasurements, resetReceiver, resetDrag, startDrag, updateDragPosition, updateReceiver, setMonitorIds, unregisterView, } = (0, hooks_1.useDraxRegistry)(dispatch);
+    const rootNodeHandleRef = (0, react_1.useRef)(null);
+    const handleGestureStateChange = (0, react_1.useCallback)((id, event) => {
         if (debug) {
             console.log(`handleGestureStateChange(${id}, ${JSON.stringify(event, null, 2)})`);
         }
@@ -199,7 +203,7 @@ const DraxProvider = ({ debug = false, children }) => {
                 if (monitors.length > 0) {
                     monitors.forEach(({ data: monitorData }) => {
                         if (monitorData) {
-                            const { relativePosition: monitorOffset, relativePositionRatio: monitorOffsetRatio, } = math_1.getRelativePosition(dragAbsolutePosition, monitorData.absoluteMeasurements);
+                            const { relativePosition: monitorOffset, relativePositionRatio: monitorOffsetRatio, } = (0, math_1.getRelativePosition)(dragAbsolutePosition, monitorData.absoluteMeasurements);
                             response = monitorData.protocol.onMonitorDragDrop?.({
                                 ...eventData,
                                 monitorOffset,
@@ -249,7 +253,7 @@ const DraxProvider = ({ debug = false, children }) => {
                         receiver: eventReceiverData,
                     };
                     monitors.forEach(({ data: monitorData }) => {
-                        const { relativePosition: monitorOffset, relativePositionRatio: monitorOffsetRatio, } = math_1.getRelativePosition(dragAbsolutePosition, monitorData.absoluteMeasurements);
+                        const { relativePosition: monitorOffset, relativePositionRatio: monitorOffsetRatio, } = (0, math_1.getRelativePosition)(dragAbsolutePosition, monitorData.absoluteMeasurements);
                         response = monitorData.protocol.onMonitorDragEnd?.({
                             ...monitorEventData,
                             monitorOffset,
@@ -373,7 +377,7 @@ const DraxProvider = ({ debug = false, children }) => {
         setMonitorIds,
         debug,
     ]);
-    const handleGestureEvent = react_1.useCallback((id, event) => {
+    const handleGestureEvent = (0, react_1.useCallback)((id, event) => {
         if (debug) {
             console.log(`handleGestureEvent(${id}, ${JSON.stringify(event, null, 2)})`);
         }
@@ -570,7 +574,7 @@ const DraxProvider = ({ debug = false, children }) => {
                 // Drag has exited monitor.
                 const monitorData = getAbsoluteViewData(monitorId);
                 if (monitorData) {
-                    const { relativePosition: monitorOffset, relativePositionRatio: monitorOffsetRatio, } = math_1.getRelativePosition(dragAbsolutePosition, monitorData.absoluteMeasurements);
+                    const { relativePosition: monitorOffset, relativePositionRatio: monitorOffsetRatio, } = (0, math_1.getRelativePosition)(dragAbsolutePosition, monitorData.absoluteMeasurements);
                     monitorData.protocol.onMonitorDragExit?.({
                         ...monitorEventDataStub,
                         monitorOffset,
@@ -621,11 +625,11 @@ const DraxProvider = ({ debug = false, children }) => {
             }
         }
     });
-    const setRootNodeHandleRef = react_1.useCallback((ref) => {
-        rootNodeHandleRef.current = ref && react_native_1.findNodeHandle(ref);
+    const setRootNodeHandleRef = (0, react_1.useCallback)((ref) => {
+        rootNodeHandleRef.current = ref && (0, react_native_1.findNodeHandle)(ref);
     }, []);
     return (react_1.default.createElement(DraxContext_1.DraxContext.Provider, { value: contextValue },
-        react_1.default.createElement(react_native_1.View, { style: styles.provider, ref: setRootNodeHandleRef },
+        react_1.default.createElement(react_native_1.View, { style: style, ref: setRootNodeHandleRef },
             children,
             react_1.default.createElement(react_native_1.View, { style: react_native_1.StyleSheet.absoluteFill, pointerEvents: "none" }, hoverViews))));
 };

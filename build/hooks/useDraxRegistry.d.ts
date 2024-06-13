@@ -55,7 +55,7 @@ export declare const useDraxRegistry: (stateDispatch: DraxStateDispatch) => {
     updateViewProtocol: (payload: UpdateViewProtocolPayload) => void;
     updateViewMeasurements: (payload: UpdateViewMeasurementsPayload) => void;
     resetReceiver: () => void;
-    resetDrag: (snapbackTarget?: DraxSnapbackTarget | undefined) => void;
+    resetDrag: (snapbackTarget?: DraxSnapbackTarget) => void;
     startDrag: (payload: StartDragPayload) => {
         dragAbsolutePosition: Position;
         dragTranslation: {

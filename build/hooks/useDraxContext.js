@@ -4,7 +4,7 @@ exports.useDraxContext = void 0;
 const react_1 = require("react");
 const DraxContext_1 = require("../DraxContext");
 const useDraxContext = () => {
-    const drax = react_1.useContext(DraxContext_1.DraxContext);
+    const drax = (0, react_1.useContext)(DraxContext_1.DraxContext);
     if (!drax) {
         throw Error('No DraxProvider found');
     }

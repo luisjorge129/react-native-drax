@@ -1,1 +1,1 @@
-export declare const useDraxId: (explicitId?: string | undefined) => string;
+export declare const useDraxId: (explicitId?: string) => string;
