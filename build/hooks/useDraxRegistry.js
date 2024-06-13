@@ -384,17 +384,15 @@ const resetDragInRegistry = (registry, snapbackTarget = types_1.DraxSnapbackTarg
                     // Call the snapback end handler, regardless of whether animation of finished.
                     onSnapbackEnd?.();
                     // If the animation finished, update the view state for the released view to be inactive.
-                    if (finished) {
-                        stateDispatch(useDraxState_1.actions.updateViewState({
-                            id: draggedId,
-                            viewStateUpdate: {
-                                dragStatus: types_1.DraxViewDragStatus.Inactive,
-                                hoverPosition: undefined,
-                                grabOffset: undefined,
-                                grabOffsetRatio: undefined,
-                            },
-                        }));
-                    }
+                    stateDispatch(useDraxState_1.actions.updateViewState({
+                        id: draggedId,
+                        viewStateUpdate: {
+                            dragStatus: types_1.DraxViewDragStatus.Inactive,
+                            hoverPosition: undefined,
+                            grabOffset: undefined,
+                            grabOffsetRatio: undefined,
+                        },
+                    }));
                 });
             }
         }
